@@ -1,17 +1,21 @@
 import numpy as np
 
 def matrix_inverse_gj(matrix):
+    # if we cannot perform gauss jordan - matrix is not squared
     if len(matrix) != len(matrix[0]):
         return "Error: Matrix should be squared to build an inverse one."
 
+    # create a copy of a matrix with type float() of the elements
     n = len(matrix)
     augmented = [row.copy() for row in matrix]
     for i in range(n):
         augmented[i] = [float(x) for x in augmented[i]]
 
+    # add an identity matrix to the right side
     for i in range(n):
         augmented[i] += [1.0 if j == i else 0.0 for j in range(n)]
 
+    # gauss jordan itself
     for pivot in range(n):
         max_row = pivot
         for i in range(pivot + 1, n):
@@ -21,6 +25,7 @@ def matrix_inverse_gj(matrix):
         if max_row != pivot:
             augmented[pivot], augmented[max_row] = augmented[max_row], augmented[pivot]
 
+        # if we cannot perform gauss jordan - matrix is singular
         if abs(augmented[pivot][pivot]) == 0:
             return "Error: Matrix is singular. Building an inverse is impossible."
 
